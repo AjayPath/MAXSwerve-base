@@ -1,12 +1,12 @@
 package frc.robot;
 
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.config.AbsoluteEncoderConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import frc.robot.Constants.ModuleConstants;
 
@@ -23,7 +23,7 @@ public final class Configs {
             drivingConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
             drivingConfig.CurrentLimits.SupplyCurrentLimit = 50;
             drivingConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-            drivingConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+            drivingConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
             drivingConfig.Feedback.SensorToMechanismRatio = ModuleConstants.kDrivingMotorReduction;
 
             drivingConfig.Slot0.kP = 0.1;

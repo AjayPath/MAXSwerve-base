@@ -46,19 +46,19 @@ public final class Constants {
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
     // SPARK MAX CAN IDs
-    public static final int kFrontLeftDrivingCanId = 1;
-    public static final int kRearLeftDrivingCanId = 2;
-    public static final int kFrontRightDrivingCanId = 3;
-    public static final int kRearRightDrivingCanId = 4;
+    public static final int kFrontLeftDrivingCanId = 11;
+    public static final int kRearLeftDrivingCanId = 12;
+    public static final int kFrontRightDrivingCanId = 13;
+    public static final int kRearRightDrivingCanId = 14;
 
-    public static final int kFrontLeftTurningCanId = 5;
-    public static final int kRearLeftTurningCanId = 6;
-    public static final int kFrontRightTurningCanId = 7;
-    public static final int kRearRightTurningCanId = 8;
+    public static final int kFrontLeftTurningCanId = 1;
+    public static final int kRearLeftTurningCanId = 2;
+    public static final int kFrontRightTurningCanId = 3;
+    public static final int kRearRightTurningCanId = 4;
 
     public static final int kGryoID = 24;
 
-    public static final boolean kGyroReversed = false;
+    public static final boolean kGyroReversed = true;
   }
 
   public static final class ModuleConstants {
@@ -106,5 +106,9 @@ public final class Constants {
 
   public static final class KrakenMotorConstants{
     public static final double kFreeSpeedRps = 100;
+  }
+
+  public static class KrakenX60 {
+    public static final double kFreeSpeed = 6000.0; // RPM
   }
 }
