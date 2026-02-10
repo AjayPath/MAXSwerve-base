@@ -10,10 +10,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.SetShooterVelocity;
+import frc.robot.commands.ShootandFeed;
+import frc.robot.commands.StartIntake;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.FloorSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -24,6 +31,11 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ShooterSubsystem s_shooterSubsystem = new ShooterSubsystem();
+  private final FloorSubsystem s_floor = new FloorSubsystem();
+  private final FeederSubsystem s_feeder = new FeederSubsystem();
+  private final LimelightSubsystem s_LimelightSubsystem = new LimelightSubsystem();
+  private final IntakeSubsystem s_IntakeSubsystem = new IntakeSubsystem();
+
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -64,12 +76,29 @@ public class RobotContainer {
             m_robotDrive));
 
     new JoystickButton(m_driverController, XboxController.Button.kStart.value)
-        .onTrue(new InstantCommand(
+        .whileTrue(new InstantCommand(
             () -> m_robotDrive.zeroHeading(),
             m_robotDrive));
 
-    new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value)
-      .whileTrue(new SetShooterVelocity(s_shooterSubsystem, 1500));
+    new Trigger(() -> m_driverController.getRightTriggerAxis() > 0.2)  // thresholdlimelight")
+      .whileTrue(
+          new ShootandFeed(s_shooterSubsystem, 27.3, s_floor, s_feeder)
+      );
+
+    new Trigger(() -> m_driverController.getLeftTriggerAxis() > 0.2)  // thresholdlimelight")
+      .whileTrue(
+          new StartIntake(s_IntakeSubsystem)
+      );
+
+    // new JoystickButton(m_driverController, XboxController.Button.kB.value)
+    //   .whileTrue(new Startm_robotDriveFloor(s_floor));
+
+    // new JoystickButton(m_driverController, XboxController.Button.kX.value)
+    //   .whileTrue(new StartFeeder(s_feeder));
+
+    // new JoystickButton(m_driverController, XboxController.Button.kA.value)
+    //   .whileTrue(new StartShooterVelocity(s_shooterSubsystem, 50));
+
 
   }
 
@@ -85,4 +114,6 @@ public class RobotContainer {
 public DriveSubsystem getDriveSubsystem() {
     return m_robotDrive;
   }
+
+
 }

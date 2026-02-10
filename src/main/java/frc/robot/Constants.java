@@ -3,11 +3,12 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import static edu.wpi.first.units.Units.RPM;
+import edu.wpi.first.units.measure.AngularVelocity;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -108,7 +109,12 @@ public final class Constants {
     public static final double kFreeSpeedRps = 100;
   }
 
-  public static class KrakenX60 {
-    public static final double kFreeSpeed = 6000.0; // RPM
-  }
+     public static class KrakenX60 {
+        public static final double kFreeSpeed = 6000;
+    }
+
+    public static class krak {
+      public static final AngularVelocity kSpeed = RPM.of(6000);
+    }
+    
 }

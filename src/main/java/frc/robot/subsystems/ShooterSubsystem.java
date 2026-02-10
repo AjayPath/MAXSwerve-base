@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -12,41 +8,67 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
 
 public class ShooterSubsystem extends SubsystemBase {
-  /** Creates a new ShooterSubsystem. */
+  private final TalonFX leftShooterMotor;
+  private final TalonFX rightShooterMotor;
 
-  // initalize motor
-  private final TalonFX m_shootingMotor;
+  private final VelocityVoltage velocityRequest;
 
-  // set control type
-  private final VelocityVoltage m_shootingVelocityRequest;
+  private double targetRPS = 0;
 
   public ShooterSubsystem() {
-    // Change CAN ID FOR TESTING
-    m_shootingMotor = new TalonFX(52);
+    leftShooterMotor = new TalonFX(52);
+    rightShooterMotor = new TalonFX(40);
 
-    // Configure motor
-    m_shootingMotor.getConfigurator().apply(Configs.shootingMotor.shootingConfig);
+    velocityRequest = new VelocityVoltage(0).withSlot(0);
 
-    // Setup velocity
-    m_shootingVelocityRequest = new VelocityVoltage(0).withSlot(0);
+    leftShooterMotor.getConfigurator().apply(Configs.shootingMotor.shootingLeftConfig);
+    rightShooterMotor.getConfigurator().apply(Configs.shootingMotor.shootingRightConfig);
 
+    // If needed:
+    // rightShooterMotor.setInverted(true);
   }
 
-  public void setVelocity(double shooterVelocity) {
-    m_shootingMotor.setControl(m_shootingVelocityRequest.withVelocity(shooterVelocity)); // make sure this is double
+  /** Set both motors to ANY velocity (RPS) */
+  public void setVelocity(double rps) {
+    targetRPS = rps;
+
+    leftShooterMotor.setControl(velocityRequest.withVelocity(rps));
+    rightShooterMotor.setControl(velocityRequest.withVelocity(rps));
   }
 
+  /** Optional: allow independent wheel tuning */
+  public void setVelocity(double leftRPS, double rightRPS) {
+    targetRPS = leftRPS; // primary reference (for atTargetSpeed)
+
+    leftShooterMotor.setControl(velocityRequest.withVelocity(leftRPS));
+    rightShooterMotor.setControl(velocityRequest.withVelocity(rightRPS));
+  }
+
+  /** Stop both motors */
   public void stop() {
-    m_shootingMotor.stopMotor();
+    leftShooterMotor.stopMotor();
+    rightShooterMotor.stopMotor();
+    targetRPS = 0;
   }
 
-  public boolean atTargetSpeed(double targetRPS, double tolerance) {
-    return Math.abs(m_shootingMotor.getVelocity().getValueAsDouble() - targetRPS) < tolerance;
+  public double getLeftSpeed() {
+    return leftShooterMotor.getVelocity().getValueAsDouble();
+  }
+
+  public double getRightSpeed() {
+    return rightShooterMotor.getVelocity().getValueAsDouble();
+  }
+
+  /** Both motors must be within tolerance of target */
+  public boolean atTargetSpeed(double tolerance) {
+    return Math.abs(getLeftSpeed() - targetRPS) < tolerance &&
+           Math.abs(getRightSpeed() - targetRPS) < tolerance;
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Shooter Velocity", m_shootingMotor.getVelocity().getValueAsDouble());
+    SmartDashboard.putNumber("Shooter Target RPS", targetRPS);
+    SmartDashboard.putNumber("Shooter Left RPS", getLeftSpeed());
+    SmartDashboard.putNumber("Shooter Right RPS", getRightSpeed());
   }
 }

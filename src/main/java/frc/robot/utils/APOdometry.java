@@ -320,12 +320,12 @@ public class APOdometry {
     }
   }
 
-  /**
-   * Logs wheel poses to console (for debugging).
-   */
-  public void logWheelPoses() {
-    for (int i = 0; i < swerveMods.size(); i++) {
-      modulePoses.get(i).print("Wheel", i);
-    }
-  }
+  // /**
+  //  * Logs wheel poses to console (for debugging).
+  //  */
+  // public void logWheelPoses() {
+  //   for (int i = 0; i < swerveMods.size(); i++) {
+  //     modulePoses.get(i).printf("Wheel", i);
+  //   }
+  // }
 }

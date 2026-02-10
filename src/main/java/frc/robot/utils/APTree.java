@@ -62,7 +62,9 @@ public class APTree {
    * };
    * tree.InsertValues(shooterData);
    * </pre>
-   * 
+   * for (double[] pair : values) {
+      treeMap.put(pair[0], pair[1]);
+    }
    * @param values 2D array where each row is [key, value]
    */
   public void InsertValues(double[][] values) {
